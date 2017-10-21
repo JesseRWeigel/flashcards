@@ -27,58 +27,68 @@ export default class QuizView extends React.Component {
     const { deck } = this.props.navigation.state.params
     return (
       <View style={styles.container}>
-        { deck.questions.length <= this.state.displayQuestion ?
-          <View>
-            <Text style={styles.title}>Your Score:</Text>
-            <Text style={styles.title}>{`${(this.state.numberCorrect / deck.questions.length) * 100}%`}</Text>
-
+        {this.state.displayQuestion + 1 <= deck.questions.length &&
+          <View style={styles.questionCount}>
+            <Text>{this.state.displayQuestion + 1}/{deck.questions.length}</Text>
           </View>
-          :
-
-          deck.questions.filter((question, i) => i === this.state.displayQuestion)
-          .map(question =>
-            <View key={question.question}>
-              {!this.state.showAnswer ?
-                <View>
-                  <Text style={styles.title}>{question.question}</Text>
-                  <TouchableNativeFeedback
-                    onPress={() => this.handleClick()} >
-                    <View>
-                      <Text>Answer</Text>
-                    </View>
-                  </TouchableNativeFeedback>
-                </View>
-
-                            :
-                <View>
-                  <Text style={styles.title}>{question.answer}</Text>
-                  <TouchableNativeFeedback
-                    onPress={() => this.handleClick()} >
-                    <View>
-                      <Text>Question</Text>
-                    </View>
-                  </TouchableNativeFeedback>
-                </View>
-              }
-
-
-
-              <TouchableNativeFeedback
-                onPress={() => this.correctAnswer()}>
-                <View style={[styles.btn, styles.invertedBtn]}>
-                  <Text>Correct</Text>
-                </View>
-              </TouchableNativeFeedback>
-              <TouchableNativeFeedback
-                onPress={() => this.nextQuestion()}>
-                <View style={[styles.btn, styles.invertedBtn]}>
-                  <Text>Incorrect</Text>
-                </View>
-              </TouchableNativeFeedback>
-            </View>
-          )
         }
 
+
+        <View style={styles.container}>
+
+          { deck.questions.length <= this.state.displayQuestion ?
+            <View>
+              <Text style={styles.title}>Your Score:</Text>
+              <Text style={styles.title}>{`${(this.state.numberCorrect / deck.questions.length) * 100}%`}</Text>
+
+            </View>
+            :
+
+            deck.questions.filter((question, i) => i === this.state.displayQuestion)
+            .map(question =>
+              <View key={question.question}>
+                {!this.state.showAnswer ?
+                  <View>
+                    <Text style={styles.title}>{question.question}</Text>
+                    <TouchableNativeFeedback
+                      onPress={() => this.handleClick()} >
+                      <View>
+                        <Text>Answer</Text>
+                      </View>
+                    </TouchableNativeFeedback>
+                  </View>
+
+                            :
+                  <View>
+                    <Text style={styles.title}>{question.answer}</Text>
+                    <TouchableNativeFeedback
+                      onPress={() => this.handleClick()} >
+                      <View>
+                        <Text>Question</Text>
+                      </View>
+                    </TouchableNativeFeedback>
+                  </View>
+                }
+
+
+
+                <TouchableNativeFeedback
+                  onPress={() => this.correctAnswer()}>
+                  <View style={[styles.btn, styles.invertedBtn]}>
+                    <Text>Correct</Text>
+                  </View>
+                </TouchableNativeFeedback>
+                <TouchableNativeFeedback
+                  onPress={() => this.nextQuestion()}>
+                  <View style={[styles.btn, styles.invertedBtn]}>
+                    <Text>Incorrect</Text>
+                  </View>
+                </TouchableNativeFeedback>
+              </View>
+            )
+          }
+
+        </View>
       </View>
     )
   }
@@ -90,6 +100,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  questionCount: {
+    flex: -1,
+    justifyContent: 'flex-start',
+    alignSelf: 'flex-start',
   },
   title: {
     fontSize: 20,
