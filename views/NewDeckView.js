@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableNativeFeedback, TextInput, KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import { purple, white } from '../utils/colors'
+import ListView from './ListView'
 
 export default class NewDeckView extends React.Component {
   state = {
@@ -14,9 +15,12 @@ export default class NewDeckView extends React.Component {
   }
 
   handleSubmit = () => {
-    AsyncStorage.mergeItem('decks', JSON.stringify({
-      [this.state.input]: {title: this.state.input, questions: []}
-    }))
+    if (this.state.input !== '') {
+      AsyncStorage.mergeItem('decks', JSON.stringify({
+        [this.state.input]: {title: this.state.input, questions: []}
+      }))
+      this.props.navigation.navigate('ListView')
+    }
   }
 
 

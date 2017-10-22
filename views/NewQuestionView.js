@@ -24,23 +24,22 @@ export default class NewQuestionView extends React.Component {
 
     handleSubmit = () => {
       const { deck } = this.props.navigation.state.params
-
-      AsyncStorage.getItem('decks', (err, result) => {
-        const results = JSON.parse(result)
-        const theseQuestions = results[deck.title].questions
-        AsyncStorage.mergeItem('decks', JSON.stringify({
-          [deck.title]: {title: deck.title, questions: [{
-            question: this.state.question,
-            answer: this.state.answer
-          }, ...theseQuestions ]}
-        }), () => {
-          AsyncStorage.getItem('decks', (err, result) => {
-            console.log(JSON.parse(result))
+      if (this.state.question !== '' || this.state.answer !== '') {
+        AsyncStorage.getItem('decks', (err, result) => {
+          const results = JSON.parse(result)
+          const theseQuestions = results[deck.title].questions
+          AsyncStorage.mergeItem('decks', JSON.stringify({
+            [deck.title]: {title: deck.title, questions: [{
+              question: this.state.question,
+              answer: this.state.answer
+            }, ...theseQuestions ]}
+          }), () => {
+            AsyncStorage.getItem('decks', (err, result) => {
+              console.log(JSON.parse(result))
+            })
           })
         })
-      })
-
-
+      }
     }
 
   render () {
