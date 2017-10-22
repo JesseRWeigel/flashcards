@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, FlatList, TouchableNativeFeedback } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableNativeFeedback, AsyncStorage } from 'react-native'
 import { purple, white } from '../utils/colors'
 import DeckView from './DeckView'
 
@@ -31,13 +31,23 @@ const decks = {
 const decksData = Object.values(decks)
 
 export default class ListView extends React.Component {
+  state = {
+    decks: {},
+  }
+
+  componentDidMount = () => {
+    AsyncStorage.getItem('decks', (err, result) => {
+      this.setState({decks: JSON.parse(result)})
+    })
+  }
   renderItem = ({ item }) => {
     return (
      <TouchableNativeFeedback
+       key={item.title}
        onPress={() => this.props.navigation.navigate('Deck', { deck: item })}>
        <View style={styles.item}>
          <Text style={styles.title}>{item.title}</Text>
-         <Text style={styles.number}>{`${item.questions.length} Cards`}</Text>
+         <Text style={styles.number}>{`${item.questions && item.questions.length} Cards`}</Text>
        </View>
      </TouchableNativeFeedback>
    )
@@ -46,7 +56,7 @@ export default class ListView extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={decksData}
+          data={this.state.decks ? Object.values(this.state.decks) : decksData}
           renderItem={this.renderItem}
           keyExtractor={(item, index) => item.title}
         />
