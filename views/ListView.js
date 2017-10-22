@@ -8,6 +8,8 @@ import {
   AsyncStorage
 } from 'react-native'
 import { purple, white } from '../utils/colors'
+import { connect } from 'react-redux'
+import { fetchDecks } from '../actions'
 
 const decks = {
   React: {
@@ -37,19 +39,16 @@ const decks = {
 
 const decksData = Object.values(decks)
 
-export default class ListView extends React.Component {
-  state = {
-    decks: {}
-  }
-
-  componentDidMount = () => {
-    AsyncStorage.getItem('decks', (err, result) => {
-      if (err) {
-        console.log(err)
-      } else {
-        this.setState({ decks: JSON.parse(result) })
-      }
-    })
+class ListView extends React.Component {
+  componentWillMount = () => {
+    this.props.fetchData()
+    // AsyncStorage.getItem('decks', (err, result) => {
+    //   if (err) {
+    //     console.log(err)
+    //   } else {
+    //     this.setState({ decks: JSON.parse(result) })
+    //   }
+    // })
   }
   renderItem = ({ item }) => {
     return (
@@ -69,7 +68,7 @@ export default class ListView extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.state.decks ? Object.values(this.state.decks) : decksData}
+          data={this.props.decks ? Object.values(this.props.decks) : decksData}
           renderItem={this.renderItem}
           keyExtractor={(item, index) => item.title}
         />
@@ -99,3 +98,14 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.54)'
   }
 })
+
+const mapStateToProps = state => ({
+  decks: state.decks,
+})
+
+const mapDispatchToProps = dispatch => ({
+  dispatch,
+  fetchData: () => dispatch(fetchDecks())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListView)

@@ -9,8 +9,10 @@ import {
   AsyncStorage
 } from 'react-native'
 import { purple } from '../utils/colors'
+import { connect } from 'react-redux'
+import { addDeck } from '../actions'
 
-export default class NewDeckView extends React.Component {
+class NewDeckView extends React.Component {
   state = {
     input: ''
   }
@@ -23,12 +25,10 @@ export default class NewDeckView extends React.Component {
 
   handleSubmit = () => {
     if (this.state.input !== '') {
-      AsyncStorage.mergeItem(
-        'decks',
-        JSON.stringify({
-          [this.state.input]: { title: this.state.input, questions: [] }
-        })
-      )
+      const newDeck = {
+        [this.state.input]: { title: this.state.input, questions: [] }
+      }
+      this.props.dispatch(addDeck(newDeck))
       this.props.navigation.navigate('ListView')
     }
   }
@@ -82,3 +82,5 @@ const styles = StyleSheet.create({
     borderColor: purple
   }
 })
+
+export default connect()(NewDeckView)

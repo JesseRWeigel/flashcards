@@ -9,6 +9,26 @@ import NewQuestionView from './views/NewQuestionView'
 import QuizView from './views/QuizView'
 import { Constants } from 'expo'
 import { setLocalNotification } from './utils/helpers'
+import { createStore, applyMiddleware, compose } from 'redux'
+import reducer from './reducers'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+
+const logger = store => next => action => {
+  console.group(action.type)
+  console.info('dispatching', action)
+  let result = next(action)
+  console.log('next state', store.getState())
+  console.groupEnd(action.type)
+  return result
+}
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
+const store = createStore(
+  reducer,
+  composeEnhancers(applyMiddleware(logger, thunk))
+)
 
 function FlashcardsStatusBar ({ backgroundColor, ...props }) {
   return (
@@ -69,13 +89,15 @@ export default class App extends React.Component {
   }
   render () {
     return (
-      <View style={styles.container}>
-        <FlashcardsStatusBar
-          backgroundColor={purple}
-          barStyle='light-content'
-        />
-        <MainNavigator />
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <FlashcardsStatusBar
+            backgroundColor={purple}
+            barStyle='light-content'
+          />
+          <MainNavigator />
+        </View>
+      </Provider>
     )
   }
 }
