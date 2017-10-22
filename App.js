@@ -8,6 +8,7 @@ import DeckView from './views/DeckView'
 import NewQuestionView from './views/NewQuestionView'
 import QuizView from './views/QuizView'
 import { Constants } from 'expo'
+import { setLocalNotification } from './utils/helpers'
 
 function FlashcardsStatusBar ({ backgroundColor, ...props }) {
   return (
@@ -63,6 +64,9 @@ const MainNavigator = StackNavigator({
 })
 
 export default class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
   render () {
     return (
       <View style={styles.container}>
