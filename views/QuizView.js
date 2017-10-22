@@ -20,7 +20,6 @@ export default class QuizView extends React.Component {
 
   nextQuestion = () => {
     this.setState({displayQuestion: this.state.displayQuestion + 1})
-    console.log(this.state.displayQuestion)
   }
 
   render () {
