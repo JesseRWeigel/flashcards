@@ -1,12 +1,12 @@
-import React from 'react'
 import { AsyncStorage } from 'react-native'
 import { Notifications, Permissions } from 'expo'
 
 const NOTIFICATION_KEY = 'flashcards:notifications'
 
 export function clearLocalNotification () {
-  return AsyncStorage.removeItem(NOTIFICATION_KEY)
-    .then(Notifications.cancelAllScheduledNotificationsAsync)
+  return AsyncStorage.removeItem(NOTIFICATION_KEY).then(
+    Notifications.cancelAllScheduledNotificationsAsync
+  )
 }
 
 function createNotification () {
@@ -17,7 +17,7 @@ function createNotification () {
       sound: true,
       priority: 'high',
       sticky: false,
-      vibrate: true,
+      vibrate: true
     }
   }
 }
@@ -25,28 +25,24 @@ function createNotification () {
 export function setLocalNotification () {
   AsyncStorage.getItem(NOTIFICATION_KEY)
     .then(JSON.parse)
-    .then((data) => {
+    .then(data => {
       if (data === null) {
-        Permissions.askAsync(Permissions.NOTIFICATIONS)
-          .then(({ status }) => {
-            if (status === 'granted') {
-              Notifications.cancelAllScheduledNotificationsAsync()
+        Permissions.askAsync(Permissions.NOTIFICATIONS).then(({ status }) => {
+          if (status === 'granted') {
+            Notifications.cancelAllScheduledNotificationsAsync()
 
-              const date = new Date()
-              date.setDate(date.getDate() + 1)
-              date.setHours(20)
+            const date = new Date()
+            date.setDate(date.getDate() + 1)
+            date.setHours(20)
 
-              Notifications.scheduleLocalNotificationAsync(
-                createNotification(),
-                {
-                  time: date,
-                  repeat: 'day',
-                }
-              )
+            Notifications.scheduleLocalNotificationAsync(createNotification(), {
+              time: date,
+              repeat: 'day'
+            })
 
-              AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
-            }
-          })
+            AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+          }
+        })
       }
     })
 }

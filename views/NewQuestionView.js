@@ -1,46 +1,61 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableNativeFeedback, TextInput, KeyboardAvoidingView, AsyncStorage } from 'react-native'
-import { purple, white } from '../utils/colors'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableNativeFeedback,
+  TextInput,
+  KeyboardAvoidingView,
+  AsyncStorage
+} from 'react-native'
+import { purple } from '../utils/colors'
 
 export default class NewQuestionView extends React.Component {
+  state = {
+    question: 'Enter Question',
+    answer: 'Enter Answer'
+  }
 
+  handleQuestionChange = input => {
+    this.setState(() => ({
+      question: input
+    }))
+  }
 
-    state = {
-      question: 'Enter Question',
-      answer: 'Enter Answer'
-    }
+  handleAnswerChange = input => {
+    this.setState(() => ({
+      answer: input
+    }))
+  }
 
-    handleQuestionChange = (input) => {
-      this.setState(() => ({
-        question: input
-      }))
-    }
-
-    handleAnswerChange = (input) => {
-      this.setState(() => ({
-        answer: input
-      }))
-    }
-
-    handleSubmit = () => {
-      const { deck } = this.props.navigation.state.params
-      if (this.state.question !== '' || this.state.answer !== '') {
-        AsyncStorage.getItem('decks', (err, result) => {
+  handleSubmit = () => {
+    const { deck } = this.props.navigation.state.params
+    if (this.state.question !== '' || this.state.answer !== '') {
+      AsyncStorage.getItem('decks', (err, result) => {
+        if (err) {
+          console.log(err)
+        } else {
           const results = JSON.parse(result)
           const theseQuestions = results[deck.title].questions
-          AsyncStorage.mergeItem('decks', JSON.stringify({
-            [deck.title]: {title: deck.title, questions: [{
-              question: this.state.question,
-              answer: this.state.answer
-            }, ...theseQuestions ]}
-          }), () => {
-            AsyncStorage.getItem('decks', (err, result) => {
-              console.log(JSON.parse(result))
+          AsyncStorage.mergeItem(
+            'decks',
+            JSON.stringify({
+              [deck.title]: {
+                title: deck.title,
+                questions: [
+                  {
+                    question: this.state.question,
+                    answer: this.state.answer
+                  },
+                  ...theseQuestions
+                ]
+              }
             })
-          })
-        })
-      }
+          )
+        }
+      })
     }
+  }
 
   render () {
     const { question, answer } = this.state
@@ -57,14 +72,13 @@ export default class NewQuestionView extends React.Component {
           style={styles.input}
           onChangeText={this.handleAnswerChange}
         />
-        <TouchableNativeFeedback
-          onPress={() => this.handleSubmit()} >
+        <TouchableNativeFeedback onPress={() => this.handleSubmit()}>
           <View style={[styles.btn, styles.invertedBtn]}>
             <Text>Add to Deck</Text>
           </View>
         </TouchableNativeFeedback>
       </KeyboardAvoidingView>
-          )
+    )
   }
 }
 
@@ -76,7 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    fontSize: 24,
+    fontSize: 24
   },
   input: {
     width: 200,
@@ -90,9 +104,9 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     marginTop: 16,
     borderRadius: 2,
-    borderWidth: 2,
+    borderWidth: 2
   },
   invertedBtn: {
-    borderColor: purple,
+    borderColor: purple
   }
 })

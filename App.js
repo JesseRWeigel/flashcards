@@ -56,7 +56,7 @@ const Tabs = TabNavigator(
 
 const MainNavigator = StackNavigator({
   Home: {
-    screen: Tabs,
+    screen: Tabs
   },
   Deck: { screen: DeckView },
   NewQuestion: { screen: NewQuestionView },
@@ -64,7 +64,7 @@ const MainNavigator = StackNavigator({
 })
 
 export default class App extends React.Component {
-  componentDidMount() {
+  componentDidMount () {
     setLocalNotification()
   }
   render () {

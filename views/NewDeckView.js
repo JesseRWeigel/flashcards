@@ -1,14 +1,21 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableNativeFeedback, TextInput, KeyboardAvoidingView, AsyncStorage } from 'react-native'
-import { purple, white } from '../utils/colors'
-import ListView from './ListView'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableNativeFeedback,
+  TextInput,
+  KeyboardAvoidingView,
+  AsyncStorage
+} from 'react-native'
+import { purple } from '../utils/colors'
 
 export default class NewDeckView extends React.Component {
   state = {
-    input: '',
+    input: ''
   }
 
-  handleTextChange = (input) => {
+  handleTextChange = input => {
     this.setState(() => ({
       input
     }))
@@ -16,14 +23,15 @@ export default class NewDeckView extends React.Component {
 
   handleSubmit = () => {
     if (this.state.input !== '') {
-      AsyncStorage.mergeItem('decks', JSON.stringify({
-        [this.state.input]: {title: this.state.input, questions: []}
-      }))
+      AsyncStorage.mergeItem(
+        'decks',
+        JSON.stringify({
+          [this.state.input]: { title: this.state.input, questions: [] }
+        })
+      )
       this.props.navigation.navigate('ListView')
     }
   }
-
-
 
   render () {
     const { input } = this.state
@@ -36,14 +44,13 @@ export default class NewDeckView extends React.Component {
           defaultValue='New Deck'
           onChangeText={this.handleTextChange}
         />
-        <TouchableNativeFeedback
-          onPress={() => this.handleSubmit()} >
+        <TouchableNativeFeedback onPress={() => this.handleSubmit()}>
           <View style={[styles.btn, styles.invertedBtn]}>
             <Text>Submit</Text>
           </View>
         </TouchableNativeFeedback>
       </KeyboardAvoidingView>
-          )
+    )
   }
 }
 
@@ -55,7 +62,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    fontSize: 24,
+    fontSize: 24
   },
   input: {
     width: 200,
@@ -69,9 +76,9 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     marginTop: 16,
     borderRadius: 2,
-    borderWidth: 2,
+    borderWidth: 2
   },
   invertedBtn: {
-    borderColor: purple,
+    borderColor: purple
   }
 })

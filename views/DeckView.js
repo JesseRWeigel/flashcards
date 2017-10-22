@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native'
-import { purple, white, yellow } from '../utils/colors'
+import { purple } from '../utils/colors'
 
 export default class DeckView extends React.Component {
   render () {
@@ -10,13 +10,16 @@ export default class DeckView extends React.Component {
         <Text style={styles.title}>{deck.title}</Text>
         <Text style={styles.number}>{`${deck.questions.length} Cards`}</Text>
         <TouchableNativeFeedback
-          onPress={() => this.props.navigation.navigate('NewQuestion', { deck: deck })} >
+          onPress={() =>
+            this.props.navigation.navigate('NewQuestion', { deck: deck })}
+        >
           <View style={[styles.btn, styles.invertedBtn]}>
             <Text>Add Card</Text>
           </View>
         </TouchableNativeFeedback>
         <TouchableNativeFeedback
-          onPress={() => this.props.navigation.navigate('Quiz', { deck: deck })} >
+          onPress={() => this.props.navigation.navigate('Quiz', { deck: deck })}
+        >
           <View style={[styles.btn, styles.invertedBtn]}>
             <Text>Start Quiz</Text>
           </View>
@@ -34,10 +37,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    fontSize: 20,
+    fontSize: 20
   },
   number: {
-    color: 'rgba(0,0,0,0.54)',
+    color: 'rgba(0,0,0,0.54)'
   },
   btn: {
     padding: 80,
@@ -45,9 +48,9 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     marginTop: 16,
     borderRadius: 2,
-    borderWidth: 2,
+    borderWidth: 2
   },
   invertedBtn: {
-    borderColor: purple,
+    borderColor: purple
   }
 })
