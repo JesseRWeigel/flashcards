@@ -3,6 +3,13 @@ import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native'
 import { purple } from '../utils/colors'
 
 export default class DeckView extends React.Component {
+  handleNavigation = (view, deck) => {
+    this.props.navigation.navigate(view, { deck: deck })
+  }
+  noQuestions = () => {
+    // TODO: Give user feedback that cards need to be added before taking a quiz.
+    console.log('add a question first')
+  }
   render () {
     const { deck } = this.props.navigation.state.params
     return (
@@ -10,18 +17,21 @@ export default class DeckView extends React.Component {
         <Text style={styles.title}>{deck.title}</Text>
         <Text style={styles.number}>{`${deck.questions.length} Cards`}</Text>
         <TouchableNativeFeedback
-          onPress={() =>
-            this.props.navigation.navigate('NewQuestion', { deck: deck })}
+          onPress={() => this.handleNavigation('NewQuestion', deck)}
         >
           <View style={[styles.btn, styles.invertedBtn]}>
-            <Text>Add Card</Text>
+            <Text style={styles.btnText}>Add Card</Text>
           </View>
         </TouchableNativeFeedback>
         <TouchableNativeFeedback
-          onPress={() => this.props.navigation.navigate('Quiz', { deck: deck })}
+          onPress={
+            deck.questions.length > 0
+              ? () => this.handleNavigation('Quiz', deck)
+              : this.noQuestions()
+          }
         >
           <View style={[styles.btn, styles.invertedBtn]}>
-            <Text>Start Quiz</Text>
+            <Text style={styles.btnText}>Start Quiz</Text>
           </View>
         </TouchableNativeFeedback>
       </View>
@@ -37,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    fontSize: 20
+    fontSize: 40
   },
   number: {
     color: 'rgba(0,0,0,0.54)'
@@ -52,5 +62,8 @@ const styles = StyleSheet.create({
   },
   invertedBtn: {
     borderColor: purple
+  },
+  btnText: {
+    fontSize: 20
   }
 })
