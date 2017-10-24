@@ -18,30 +18,34 @@ class DeckView extends React.Component {
   render () {
     const deckTitle = this.props.navigation.state.params.deckTitle
     const deck = this.props.decks[deckTitle]
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>{deck.title}</Text>
-        <Text style={styles.number}>{`${deck.questions.length} Cards`}</Text>
-        <TouchableNativeFeedback
-          onPress={() => this.handleNavigation('NewQuestion', deck)}
-        >
-          <View style={[styles.btn, styles.invertedBtn]}>
-            <Text style={styles.btnText}>Add Card</Text>
-          </View>
-        </TouchableNativeFeedback>
-        <TouchableNativeFeedback
-          onPress={
-            deck.questions.length > 0
-              ? () => this.handleNavigation('Quiz', deck)
-              : this.noQuestions
-          }
-        >
-          <View style={[styles.btn, styles.invertedBtn]}>
-            <Text style={styles.btnText}>Start Quiz</Text>
-          </View>
-        </TouchableNativeFeedback>
-      </View>
-    )
+    if (!deck) {
+      return null
+    } else {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>{deck.title}</Text>
+          <Text style={styles.number}>{`${deck.questions.length} Cards`}</Text>
+          <TouchableNativeFeedback
+            onPress={() => this.handleNavigation('NewQuestion', deck)}
+          >
+            <View style={[styles.btn, styles.invertedBtn]}>
+              <Text style={styles.btnText}>Add Card</Text>
+            </View>
+          </TouchableNativeFeedback>
+          <TouchableNativeFeedback
+            onPress={
+              deck.questions.length > 0
+                ? () => this.handleNavigation('Quiz', deck)
+                : this.noQuestions
+            }
+          >
+            <View style={[styles.btn, styles.invertedBtn]}>
+              <Text style={styles.btnText}>Start Quiz</Text>
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+      )
+    }
   }
 }
 

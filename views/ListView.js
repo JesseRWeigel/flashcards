@@ -4,22 +4,22 @@ import {
   Text,
   View,
   FlatList,
-  TouchableNativeFeedback,
-  AsyncStorage
+  TouchableNativeFeedback
 } from 'react-native'
 import { purple, white } from '../utils/colors'
 import { connect } from 'react-redux'
 import { fetchDecks } from '../actions'
 
 class ListView extends React.Component {
-  componentWillMount() {
+  componentWillMount () {
     this.props.fetchData()
   }
-  renderItem = ({ item }) => {
+  renderItem = ({ item, i }) => {
     return (
       <TouchableNativeFeedback
-        key={item.title}
-        onPress={() => this.props.navigation.navigate('Deck', { deckTitle: item.title })}
+        key={item.title + i}
+        onPress={() =>
+          this.props.navigation.navigate('Deck', { deckTitle: item.title })}
       >
         <View style={styles.item}>
           <Text style={styles.title}>{item.title}</Text>
@@ -32,11 +32,13 @@ class ListView extends React.Component {
   render () {
     return (
       <View style={styles.container}>
-        {Object.keys(this.props.decks).length === 0 &&
+        {Object.keys(this.props.decks).length === 0 && (
           <Text style={styles.title}>Please create a new deck!</Text>
-        }
+        )}
         <FlatList
-          data={this.props.decks !== undefined && Object.values(this.props.decks)}
+          data={
+            this.props.decks !== undefined && Object.values(this.props.decks)
+          }
           renderItem={this.renderItem}
           keyExtractor={(item, index) => item.title}
         />
