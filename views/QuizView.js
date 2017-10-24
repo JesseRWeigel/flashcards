@@ -22,6 +22,13 @@ export default class QuizView extends React.Component {
     this.setState({ displayQuestion: this.state.displayQuestion + 1 })
   }
 
+  restart = () => {
+    this.setState({
+      displayQuestion: 0,
+      numberCorrect: 0
+    })
+  }
+
   render () {
     const { deck } = this.props.navigation.state.params
     return (
@@ -41,44 +48,58 @@ export default class QuizView extends React.Component {
               <Text style={styles.title}>{`${this.state.numberCorrect /
                 deck.questions.length *
                 100}%`}</Text>
+              <TouchableNativeFeedback
+                onPress={() => this.restart() }
+              >
+                <View style={[styles.btn, styles.invertedBtn]}>
+                  <Text style={styles.btnText}>Restart Quiz</Text>
+                </View>
+              </TouchableNativeFeedback>
+              <TouchableNativeFeedback
+                onPress={() => this.props.navigation.navigate('Deck', { deck: deck })}
+              >
+                <View style={[styles.btn, styles.invertedBtn]}>
+                  <Text style={styles.btnText}>Back</Text>
+                </View>
+              </TouchableNativeFeedback>
             </View>
           ) : (
             deck.questions
-              .filter((question, i) => i === this.state.displayQuestion)
-              .map(question => (
-                <View key={question.question}>
-                  {!this.state.showAnswer ? (
-                    <View>
-                      <Text style={styles.title}>{question.question}</Text>
-                      <TouchableNativeFeedback
-                        onPress={() => this.handleClick()}
-                      >
-                        <View>
-                          <Text>Answer</Text>
-                        </View>
-                      </TouchableNativeFeedback>
-                    </View>
-                  ) : (
-                    <View>
-                      <Text style={styles.title}>{question.answer}</Text>
-                      <TouchableNativeFeedback
-                        onPress={() => this.handleClick()}
-                      >
-                        <View>
-                          <Text>Question</Text>
-                        </View>
-                      </TouchableNativeFeedback>
-                    </View>
-                  )}
+            .filter((question, i) => i === this.state.displayQuestion)
+            .map(question => (
+              <View key={question.question}>
+                {!this.state.showAnswer ? (
+                  <View>
+                    <Text style={styles.title}>{question.question}</Text>
+                    <TouchableNativeFeedback
+                      onPress={() => this.handleClick()}
+                    >
+                      <View>
+                        <Text>Answer</Text>
+                      </View>
+                    </TouchableNativeFeedback>
+                  </View>
+                ) : (
+                  <View>
+                    <Text style={styles.title}>{question.answer}</Text>
+                    <TouchableNativeFeedback
+                      onPress={() => this.handleClick()}
+                    >
+                      <View>
+                        <Text>Question</Text>
+                      </View>
+                    </TouchableNativeFeedback>
+                  </View>
+                )}
 
-                  <TouchableNativeFeedback onPress={() => this.correctAnswer()}>
-                    <View style={[styles.btn, styles.invertedBtn]}>
-                      <Text>Correct</Text>
-                    </View>
-                  </TouchableNativeFeedback>
-                  <TouchableNativeFeedback onPress={() => this.nextQuestion()}>
-                    <View style={[styles.btn, styles.invertedBtn]}>
-                      <Text>Incorrect</Text>
+                <TouchableNativeFeedback onPress={() => this.correctAnswer()}>
+                  <View style={[styles.btn, styles.invertedBtn]}>
+                    <Text style={styles.btnText}>Correct</Text>
+                  </View>
+                </TouchableNativeFeedback>
+                <TouchableNativeFeedback onPress={() => this.nextQuestion()}>
+                  <View style={[styles.btn, styles.invertedBtn]}>
+                    <Text style={styles.btnText}>Incorrect</Text>
                     </View>
                   </TouchableNativeFeedback>
                 </View>
@@ -103,7 +124,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start'
   },
   title: {
-    fontSize: 20
+    fontSize: 30
   },
   number: {
     color: 'rgba(0,0,0,0.54)'
@@ -118,5 +139,8 @@ const styles = StyleSheet.create({
   },
   invertedBtn: {
     borderColor: purple
+  },
+  btnText: {
+    fontSize: 20
   }
 })
