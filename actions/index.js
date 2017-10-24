@@ -16,6 +16,6 @@ export const addDeck = data => dispatch =>
   API.addDeck(data)
     .then(decks => dispatch(getDecks(decks, ADD_DECK)))
 
-export const addCard = (data, id) => dispatch =>
-  API.addCard(data, id)
+export const addCard = (data) => dispatch =>
+  API.addCard(data)
     .then(decks => dispatch(getDecks(decks, ADD_CARD)))

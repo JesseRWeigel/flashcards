@@ -8,8 +8,10 @@ export const  addDeck = (newDeck) =>
   AsyncStorage.mergeItem(
     'decks',
     JSON.stringify(newDeck)
-  ).then(data => JSON.parse(data))
+  ).then(data => newDeck)
 
-export const  addCard = () => {
-  console.log('addCard')
-}
+export const  addCard = (deck) => 
+  AsyncStorage.mergeItem(
+    'decks',
+    JSON.stringify(deck)
+  ).then(data => deck)

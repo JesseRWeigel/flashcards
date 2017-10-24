@@ -4,17 +4,7 @@ import {
   ADD_CARD
 } from '../actions'
 
-// function makeObj (items) {
-//   const newObj = {}
-//   for (let i = 0; i < items.length; i++) {
-//     const item = items[i]
-//     const itemId = item.id
-//     newObj[itemId] = item
-//   }
-//   return newObj
-// }
-
-function fetchDecks (state = {}, action) {
+function getDecks (state = {}, action) {
   switch (action.type) {
     case GET_DECKS:
     case ADD_DECK:
@@ -27,4 +17,4 @@ function fetchDecks (state = {}, action) {
 }
 
 
-export default fetchDecks
+export default getDecks

@@ -11,44 +11,10 @@ import { purple, white } from '../utils/colors'
 import { connect } from 'react-redux'
 import { fetchDecks } from '../actions'
 
-const decks = {
-  React: {
-    title: 'React',
-    questions: [
-      {
-        question: 'What is React?',
-        answer: 'A library for managing user interfaces'
-      },
-      {
-        question: 'Where do you make Ajax requests in React?',
-        answer: 'The componentDidMount lifecycle event'
-      }
-    ]
-  },
-  JavaScript: {
-    title: 'JavaScript',
-    questions: [
-      {
-        question: 'What is a closure?',
-        answer:
-          'The combination of a function and the lexical environment within which that function was declared.'
-      }
-    ]
-  }
-}
-
-const decksData = Object.values(decks)
-
 class ListView extends React.Component {
-  componentWillMount = () => {
+  componentWillMount() {
+    AsyncStorage.clear()
     this.props.fetchData()
-    // AsyncStorage.getItem('decks', (err, result) => {
-    //   if (err) {
-    //     console.log(err)
-    //   } else {
-    //     this.setState({ decks: JSON.parse(result) })
-    //   }
-    // })
   }
   renderItem = ({ item }) => {
     return (
@@ -67,8 +33,11 @@ class ListView extends React.Component {
   render () {
     return (
       <View style={styles.container}>
+        {this.props.decks &&
+          <Text style={styles.title}>Please create a new deck!</Text>
+        }
         <FlatList
-          data={this.props.decks ? Object.values(this.props.decks) : decksData}
+          data={this.props.decks !== undefined && Object.values(this.props.decks)}
           renderItem={this.renderItem}
           keyExtractor={(item, index) => item.title}
         />
@@ -100,7 +69,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-  decks: state.decks,
+  decks: state
 })
 
 const mapDispatchToProps = dispatch => ({

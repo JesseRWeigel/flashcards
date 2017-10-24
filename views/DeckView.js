@@ -1,8 +1,13 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native'
 import { purple } from '../utils/colors'
+import { connect } from 'react-redux'
+import { fetchDecks } from '../actions'
 
-export default class DeckView extends React.Component {
+class DeckView extends React.Component {
+    componentWillMount() {
+      this.props.fetchData()
+    }
   handleNavigation = (view, deck) => {
     this.props.navigation.navigate(view, { deck: deck })
   }
@@ -11,7 +16,8 @@ export default class DeckView extends React.Component {
     console.log('add a question first')
   }
   render () {
-    const { deck } = this.props.navigation.state.params
+    const deckTitle = this.props.navigation.state.params.deck.title
+    const deck = this.props.decks[deckTitle]
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{deck.title}</Text>
@@ -26,8 +32,8 @@ export default class DeckView extends React.Component {
         <TouchableNativeFeedback
           onPress={
             deck.questions.length > 0
-              ? () => this.handleNavigation('Quiz', deck)
-              : this.noQuestions()
+            ? () => this.handleNavigation('Quiz', deck)
+            : this.noQuestions
           }
         >
           <View style={[styles.btn, styles.invertedBtn]}>
@@ -67,3 +73,14 @@ const styles = StyleSheet.create({
     fontSize: 20
   }
 })
+
+const mapStateToProps = state => ({
+  decks: state
+})
+
+const mapDispatchToProps = dispatch => ({
+  dispatch,
+  fetchData: () => dispatch(fetchDecks())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeckView)

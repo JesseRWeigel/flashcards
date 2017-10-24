@@ -9,8 +9,10 @@ import {
   AsyncStorage
 } from 'react-native'
 import { purple } from '../utils/colors'
+import { connect } from 'react-redux'
+import { addCard } from '../actions'
 
-export default class NewQuestionView extends React.Component {
+class NewQuestionView extends React.Component {
   state = {
     question: 'Enter Question',
     answer: 'Enter Answer'
@@ -30,30 +32,25 @@ export default class NewQuestionView extends React.Component {
 
   handleSubmit = () => {
     const { deck } = this.props.navigation.state.params
+
     if (this.state.question !== '' || this.state.answer !== '') {
-      AsyncStorage.getItem('decks', (err, result) => {
-        if (err) {
-          console.log(err)
-        } else {
-          const results = JSON.parse(result)
-          const theseQuestions = results[deck.title].questions
-          AsyncStorage.mergeItem(
-            'decks',
-            JSON.stringify({
-              [deck.title]: {
-                title: deck.title,
-                questions: [
-                  {
-                    question: this.state.question,
-                    answer: this.state.answer
-                  },
-                  ...theseQuestions
-                ]
-              }
-            })
-          )
+      const theseQuestions = deck.questions.length > 0 ? deck.questions : {}
+
+      const updatedDeck = {
+        [deck.title]: {
+          title: deck.title,
+          questions: [
+            {
+              question: this.state.question,
+              answer: this.state.answer
+            },
+            ...theseQuestions
+          ]
         }
-      })
+      }
+      // console.log(updatedDeck)
+      this.props.dispatch(addCard(updatedDeck))
+
     }
   }
 
@@ -61,7 +58,7 @@ export default class NewQuestionView extends React.Component {
     const { question, answer } = this.state
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
-        <Text style={styles.title}>What is the title of your new deck?</Text>
+        <Text style={styles.title}>Add a new card!</Text>
         <TextInput
           value={question}
           style={styles.input}
@@ -110,3 +107,5 @@ const styles = StyleSheet.create({
     borderColor: purple
   }
 })
+
+export default connect()(NewQuestionView)

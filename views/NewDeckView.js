@@ -29,7 +29,7 @@ class NewDeckView extends React.Component {
         [this.state.input]: { title: this.state.input, questions: [] }
       }
       this.props.dispatch(addDeck(newDeck))
-      this.props.navigation.navigate('ListView')
+      // this.props.navigation.navigate('ListView')
     }
   }
 
