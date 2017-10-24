@@ -19,7 +19,7 @@ class ListView extends React.Component {
     return (
       <TouchableNativeFeedback
         key={item.title}
-        onPress={() => this.props.navigation.navigate('Deck', { deck: item })}
+        onPress={() => this.props.navigation.navigate('Deck', { deckTitle: item.title })}
       >
         <View style={styles.item}>
           <Text style={styles.title}>{item.title}</Text>

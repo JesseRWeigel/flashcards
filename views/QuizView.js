@@ -56,7 +56,7 @@ export default class QuizView extends React.Component {
                 </View>
               </TouchableNativeFeedback>
               <TouchableNativeFeedback
-                onPress={() => this.props.navigation.navigate('Deck', { deck: deck })}
+                onPress={() => this.props.navigation.navigate('Deck', { deckTitle: deck.title })}
               >
                 <View style={[styles.btn, styles.invertedBtn]}>
                   <Text style={styles.btnText}>Back</Text>

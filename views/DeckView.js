@@ -16,7 +16,7 @@ class DeckView extends React.Component {
     console.log('add a question first')
   }
   render () {
-    const deckTitle = this.props.navigation.state.params.deck.title
+    const deckTitle = this.props.navigation.state.params.deckTitle
     const deck = this.props.decks[deckTitle]
     return (
       <View style={styles.container}>
