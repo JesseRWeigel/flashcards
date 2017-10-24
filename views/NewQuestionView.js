@@ -5,8 +5,7 @@ import {
   View,
   TouchableNativeFeedback,
   TextInput,
-  KeyboardAvoidingView,
-  AsyncStorage
+  KeyboardAvoidingView
 } from 'react-native'
 import { purple } from '../utils/colors'
 import { connect } from 'react-redux'
@@ -48,9 +47,7 @@ class NewQuestionView extends React.Component {
           ]
         }
       }
-      // console.log(updatedDeck)
       this.props.dispatch(addCard(updatedDeck))
-
     }
   }
 

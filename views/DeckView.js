@@ -5,9 +5,9 @@ import { connect } from 'react-redux'
 import { fetchDecks } from '../actions'
 
 class DeckView extends React.Component {
-    componentWillMount() {
-      this.props.fetchData()
-    }
+  componentWillMount () {
+    this.props.fetchData()
+  }
   handleNavigation = (view, deck) => {
     this.props.navigation.navigate(view, { deck: deck })
   }
@@ -32,8 +32,8 @@ class DeckView extends React.Component {
         <TouchableNativeFeedback
           onPress={
             deck.questions.length > 0
-            ? () => this.handleNavigation('Quiz', deck)
-            : this.noQuestions
+              ? () => this.handleNavigation('Quiz', deck)
+              : this.noQuestions
           }
         >
           <View style={[styles.btn, styles.invertedBtn]}>

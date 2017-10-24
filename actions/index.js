@@ -9,13 +9,10 @@ export const getDecks = (decks, actionType) => ({
 })
 
 export const fetchDecks = () => dispatch =>
-  API.fetchDecks()
-    .then(decks => dispatch(getDecks(decks, GET_DECKS)))
+  API.fetchDecks().then(decks => dispatch(getDecks(decks, GET_DECKS)))
 
 export const addDeck = data => dispatch =>
-  API.addDeck(data)
-    .then(decks => dispatch(getDecks(decks, ADD_DECK)))
+  API.addDeck(data).then(decks => dispatch(getDecks(decks, ADD_DECK)))
 
-export const addCard = (data) => dispatch =>
-  API.addCard(data)
-    .then(decks => dispatch(getDecks(decks, ADD_CARD)))
+export const addCard = data => dispatch =>
+  API.addCard(data).then(decks => dispatch(getDecks(decks, ADD_CARD)))

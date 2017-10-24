@@ -5,8 +5,7 @@ import {
   View,
   TouchableNativeFeedback,
   TextInput,
-  KeyboardAvoidingView,
-  AsyncStorage
+  KeyboardAvoidingView
 } from 'react-native'
 import { purple } from '../utils/colors'
 import { connect } from 'react-redux'

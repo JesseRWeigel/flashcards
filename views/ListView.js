@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import { fetchDecks } from '../actions'
 
 class ListView extends React.Component {
-  componentWillMount() {
+  componentWillMount () {
     AsyncStorage.clear()
     this.props.fetchData()
   }
@@ -33,11 +33,13 @@ class ListView extends React.Component {
   render () {
     return (
       <View style={styles.container}>
-        {this.props.decks &&
+        {this.props.decks && (
           <Text style={styles.title}>Please create a new deck!</Text>
-        }
+        )}
         <FlatList
-          data={this.props.decks !== undefined && Object.values(this.props.decks)}
+          data={
+            this.props.decks !== undefined && Object.values(this.props.decks)
+          }
           renderItem={this.renderItem}
           keyExtractor={(item, index) => item.title}
         />
