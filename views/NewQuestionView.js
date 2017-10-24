@@ -13,8 +13,8 @@ import { addCard } from '../actions'
 
 class NewQuestionView extends React.Component {
   state = {
-    question: 'Enter Question',
-    answer: 'Enter Answer'
+    question: '',
+    answer: ''
   }
 
   handleQuestionChange = input => {
@@ -48,25 +48,26 @@ class NewQuestionView extends React.Component {
         }
       }
       this.props.dispatch(addCard(updatedDeck))
+
+      this.props.navigation.navigate('Deck', { deckTitle: deck.title })
     }
   }
 
   render () {
-    const { question, answer } = this.state
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
         <Text style={styles.title}>Add a new card!</Text>
         <TextInput
-          value={question}
+          placeholder='Enter Question'
           style={styles.input}
           onChangeText={this.handleQuestionChange}
         />
         <TextInput
-          value={answer}
+          placeholder='Enter Answer'
           style={styles.input}
           onChangeText={this.handleAnswerChange}
         />
-        <TouchableNativeFeedback onPress={() => this.handleSubmit()}>
+        <TouchableNativeFeedback onPress={this.handleSubmit}>
           <View style={[styles.btn, styles.invertedBtn]}>
             <Text>Add to Deck</Text>
           </View>
